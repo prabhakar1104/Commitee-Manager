@@ -1,0 +1,244 @@
+/* Variables */
+:root {
+    --primary-color: #4a6bff;
+    --secondary-color: #f8f9fa;
+    --text-color: #333;
+    --light-text: #6c757d;
+    --border-color: #e0e0e0;
+    --success-color: #28a745;
+    --pending-color: #ffc107;
+    --background-color: #f9fafb;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.user-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+.committee-header {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.header-content h1 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.committee-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--light-text);
+    font-size: 15px;
+}
+
+/* History Button */
+.history-button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.history-button:hover {
+    background-color: #e0e5ff;
+}
+
+/* User Actions */
+.user-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.export-button, .print-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: white;
+    color: var(--text-color);
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.export-button:hover, .print-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Members Table */
+.committee-members {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.committee-members h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.members-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.members-table th {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.members-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.members-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.payment-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.payment-status.paid {
+    background-color: #e6f7ee;
+    color: var(--success-color);
+}
+
+.payment-status.pending {
+    background-color: #fff4e5;
+    color: var(--pending-color);
+}
+
+.no-members {
+    text-align: center;
+    color: var(--light-text);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Footer */
+.committee-footer {
+    text-align: right;
+    font-size: 14px;
+    color: var(--light-text);
+    padding: 15px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .committee-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .members-table th, 
+    .members-table td {
+        padding: 8px 12px;
+    }
+    
+    .payment-status {
+        font-size: 12px;
+    }
+}
+
+.share-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+.share-button:hover {
+    background-color: #45a049;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}

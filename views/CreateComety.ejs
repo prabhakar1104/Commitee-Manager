@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Committee</title>
+  <link rel="stylesheet" href="/css/create-committee.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="form-container">
+    <div class="form-header">
+      <h1><i class="fas fa-users"></i> Create New Committee</h1>
+      <p>Fill in the details below to create a new committee</p>
+    </div>
+
+    <form action="/api/admin/adminPage/createComety?id=<%= adminId %>" method="POST" class="committee-form">
+      <div class="form-group">
+        <label for="title">
+          <i class="fas fa-heading"></i> Committee Title
+        </label>
+        <input 
+          type="text" 
+          id="title" 
+          name="title" 
+          placeholder="e.g. Office Savings Committee" 
+          required
+        >
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="amountPerMember">
+            <i class="fas fa-rupee-sign"></i> Amount per Member
+          </label>
+          <input 
+            type="number" 
+            id="amountPerMember" 
+            name="amountPerMember" 
+            placeholder="e.g. 5000"
+            min="1"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="totalMembers">
+            <i class="fas fa-user-friends"></i> Total Members
+          </label>
+          <input 
+            type="number" 
+            id="totalMembers" 
+            name="totalMembers" 
+            placeholder="e.g. 10"
+            min="1"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="startDate">
+          <i class="far fa-calendar-alt"></i> Start Date
+        </label>
+        <input 
+          type="date" 
+          id="startDate" 
+          name="startDate"
+          min="<%= new Date().toISOString().split('T')[0] %>"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-plus-circle"></i> Create Committee
+        </button>
+        <a href="/api/admin/adminPage/<%=adminId %>" class="cancel-btn">
+          <i class="fas fa-times"></i> Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

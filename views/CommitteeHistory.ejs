@@ -1,0 +1,91 @@
+<!-- filepath: c:\Users\prince kumar\Desktop\Backend\Commety - Copy\views\CommitteeHistory.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Committee History</title>
+    <link rel="stylesheet" href="/css/userpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="user-container">
+        <form action="/api/admin/committee" method="POST" style="display: inline;">
+            <input type="hidden" name="committeeId" value="<%= committee._id %>">
+            <button type="submit" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Committee
+            </button>
+        </form>
+
+        <header class="committee-header">
+            <h1><i class="fas fa-history"></i> <%= committee.title %> - History</h1>
+        </header>
+
+        <% history.forEach(record => { %>
+            <div class="history-record">
+                <div class="history-header">
+                    <h3>
+                        <i class="fas fa-clock"></i>
+                        <%= new Date(record.date).toLocaleString() %>
+                        - <%= record.changeType.replace('_', ' ').toUpperCase() %>
+                    </h3>
+                    <span>Changed by: <%= record.changedBy?.name || 'System' %></span>
+                </div>
+<div class="members-changes">
+    <table class="members-table">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Previous Amount</th>
+                <th>Previous Paid</th>
+                <th>Previous Due</th>
+                <th>Previous Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% record.members.forEach(member => { 
+                // Calculate previous due amount
+                const previousDue = member.previousAmount - member.previousPaidAmount;
+            %>
+                <tr>
+                    <td><%= member.name %></td>
+                    <td>₹<%= member.previousAmount.toFixed(2) %></td>
+                    <td>₹<%= member.previousPaidAmount.toFixed(2) %></td>
+                    <td class="<%= previousDue <= 0 ? 'paid' : 'due' %>">
+                        ₹<%= previousDue.toFixed(2) %>
+                    </td>
+                    <td>
+                        <span class="status-badge <%= member.previousStatus %>">
+                            <%= member.previousStatus %>
+                        </span>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+            </div>
+        <% }) %>
+    </div>
+
+    <style>
+    .history-record {
+        background: white;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .history-header h3 {
+        margin: 0;
+        color: #4a6bff;
+    }
+    </style>
+</body>
+</html>

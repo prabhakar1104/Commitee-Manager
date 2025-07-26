@@ -1,0 +1,328 @@
+/* Base Styles */
+:root {
+    --primary-color: #4a6bff;
+    --secondary-color: #f8f9fa;
+    --text-color: #333;
+    --light-text: #6c757d;
+    --border-color: #e0e0e0;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+    color: var(--text-color);
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+.admin-header {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.admin-header h1 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 28px;
+}
+
+.admin-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--light-text);
+}
+
+/* Main Content Styles */
+.admin-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.quick-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.create-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.create-button:hover {
+    background-color: #3a5bef;
+}
+
+/* Committees Section */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stats-badge {
+    background-color: var(--secondary-color);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: var(--light-text);
+}
+
+/* Committee Grid */
+.committee-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.committee-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.committee-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--primary-color);
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background-color: #e6f7ee;
+    color: var(--success-color);
+}
+
+.card-details {
+    flex-grow: 1;
+}
+
+.card-details p {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--light-text);
+}
+
+.card-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.action-button.view {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.action-button.view:hover {
+    background-color: #e0e5ff;
+}
+
+/* Empty State */
+.empty-state {
+    background-color: white;
+    padding: 40px 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: var(--light-text);
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    font-size: 16px;
+    color: var(--light-text);
+    margin-bottom: 20px;
+}
+
+/* Footer */
+.admin-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+    font-size: 13px;
+    color: var(--light-text);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .committee-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .quick-actions {
+        justify-content: flex-start;
+    }
+}
+
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.logout-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.home-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.home-button:hover {
+    background-color: #5a6268;
+}
+
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.action-button.view {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.action-button.delete {
+    background-color: #fee;
+    color: var(--danger-color);
+}
+
+.action-button.view:hover {
+    background-color: #e0e5ff;
+}
+
+.action-button.delete:hover {
+    background-color: #fdd;
+}

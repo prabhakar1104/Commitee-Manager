@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Committee Members | <%= committee.title %></title>
+  <link rel="stylesheet" href="/css/committee-member.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="management-container">
+    <!-- Header Section -->
+    <header class="management-header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1><i class="fas fa-users-gear"></i> Member Management</h1>
+          <p class="committee-title"><%= committee.title %></p>
+        </div>
+        <div class="header-right">
+          <form action="/api/admin/adminPage" method="POST">
+            <input type="hidden" name="adminId" value="<%= committee.adminId._id %>">
+            <button type="submit" class="back-button">
+              <i class="fas fa-arrow-left"></i> Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="management-main">
+      <!-- Common Amount Section -->
+      <section class="card common-amount-card">
+        <div class="card-header">
+          <h2><i class="fas fa-money-bill-wave"></i> Committee Amount Settings</h2>
+        </div>
+        <div class="card-body">
+          <form action="/api/admin/committee/<%= committee._id %>/set-common-amount" method="POST">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="commonAmount">Set Common Amount</label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fas fa-rupee-sign"></i></span>
+                  <input type="number" id="commonAmount" name="commonAmount" 
+                         placeholder="Enter amount" min="1" required
+                         value="<%= committee.amountPerMember || '' %>">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" 
+                      onclick="return confirm('This will update all member amounts. Continue?');">
+                <i class="fas fa-sync-alt"></i> Apply to All
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Add Member Section -->
+      <section class="card add-member-card">
+        <div class="card-header">
+          <h2><i class="fas fa-user-plus"></i> Add New Member</h2>
+        </div>
+        <div class="card-body">
+          <form action="/api/admin/committee/<%= committee._id %>/members/add" method="POST">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="memberName">Member Name</label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fas fa-user"></i></span>
+                  <input type="text" id="memberName" name="name" placeholder="Enter name" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="memberAmount">Amount (₹)</label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fas fa-rupee-sign"></i></span>
+                  <input type="number" id="memberAmount" name="amount" 
+                         placeholder="Enter amount" min="1" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="paidAmount">Paid Amount (₹)</label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fas fa-check-circle"></i></span>
+                  <input type="number" id="paidAmount" name="paidAmount" 
+                         placeholder="Enter paid amount" min="0" value="0">
+                </div>
+              </div>
+              
+              <div class="form-submit">
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-plus"></i> Add Member
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Members List Section -->
+      <section class="card members-list-card">
+        <div class="card-header">
+          <div class="header-row">
+            <h2><i class="fas fa-users"></i> Member List</h2>
+            <span class="badge"><%= members.length %> members</span>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <% if (members.length > 0) { %>
+            <div class="table-responsive">
+              <table class="members-table">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th class="text-right">Amount</th>
+                    <th class="text-right">Paid</th>
+                    <th>Progress</th>
+                    <th class="text-right">Due</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% members.forEach(member => { 
+                      const paid = member.paidAmount || 0;
+                      const due = member.amount - paid;
+                      const paymentPercentage = Math.min(100, (paid / member.amount) * 100);
+                      let statusClass = 'unpaid';
+                      let statusText = 'Pending';
+                      
+                      if (paid >= member.amount) {
+                        statusClass = 'paid';
+                        statusText = 'Paid';
+                      } else if (paid > 0) {
+                        statusClass = 'partial';
+                        statusText = 'Partial';
+                      }
+                  %>
+                    <tr>
+                      <td class="member-name">
+                        <i class="fas fa-user"></i>
+                        <%= member.name %>
+                      </td>
+                      
+                      <td class="text-right amount">
+                        ₹<%= member.amount.toLocaleString('en-IN') %>
+                      </td>
+                      
+                      <td class="text-right paid-amount">
+                        ₹<%= paid.toLocaleString('en-IN') %>
+                      </td>
+                      
+                      <td class="progress-cell">
+                        <div class="progress-container">
+                          <div class="progress-bar" style="width: <%= paymentPercentage %>%">
+                            <span class="progress-text"><%= Math.round(paymentPercentage) %>%</span>
+                          </div>
+                        </div>
+                      </td>
+                      
+                      <td class="text-right due-amount <%= statusClass %>">
+                        ₹<%= due.toLocaleString('en-IN') %>
+                      </td>
+                      
+                      <td>
+                        <span class="status-badge <%= statusClass %>">
+                          <i class="status-icon <%= statusClass === 'paid' ? 'fa-check-circle' : 
+                                                   statusClass === 'partial' ? 'fa-exclamation-circle' : 
+                                                   'fa-times-circle' %>"></i>
+                          <%= statusText %>
+                        </span>
+                      </td>
+                      
+                      <td class="actions-cell">
+                        <a href="/api/admin/members/<%= member._id %>/edit" class="btn btn-sm btn-edit">
+                          <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="/api/admin/members/<%= member._id %>/delete" method="POST" 
+                              onsubmit="return confirm('Are you sure you want to delete this member?');">
+                          <button type="submit" class="btn btn-sm btn-delete">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="empty-state">
+              <i class="fas fa-users-slash"></i>
+              <h3>No Members Added</h3>
+              <p>Start by adding members to this committee</p>
+            </div>
+          <% } %>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

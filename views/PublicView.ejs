@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Committees</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Available Committees</h1>
+        <p>Browse all active committees</p>
+    </header>
+
+    <main>
+        <section class="committees-section">
+            <div class="back-button">
+                <a href="/" class="btn">Back to Home</a>
+            </div>
+            
+            <% if (committees.length > 0) { %>
+                <div class="committee-grid">
+                    <% committees.forEach((committee) => { %>
+                        <div class="committee-card">
+                            <h3><%= committee.title %></h3>
+                            <p><strong>Created On:</strong> <%= committee.createdAt.toDateString() %></p>
+                            <p><strong>Members:</strong> <%= committee.totalMembers || 'Not specified' %></p>
+                            <p><strong>Amount per Member:</strong> ₹<%= committee.amountPerMember || 'Not specified' %></p>
+                            <p><strong>Managed by:</strong> <%= committee.adminId.name %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <p class="no-committees">No committees available at the moment.</p>
+            <% } %>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Committee Manager. All rights reserved.</p>
+    </footer>
+</body>
+</html>

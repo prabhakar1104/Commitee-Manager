@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= committee.title %></title>
+    <link rel="stylesheet" href="/css/userpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="user-container">
+        <div class="back-button">
+            <a href="/api/admin/public/committees" class="btn">
+                <i class="fas fa-arrow-left"></i> Back to Committees
+            </a>
+        </div>
+
+        <header class="committee-header">
+            <div class="header-content">
+                <h1><i class="fas fa-users"></i> <%= committee.title %></h1>
+                <div class="share-button" onclick="copyShareLink()">
+                    <i class="fas fa-share-alt"></i> Share Committee
+                </div>
+            </div>
+            <div class="committee-meta">
+                <div class="meta-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Managed by: <%= committee.adminId.name %></span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-rupee-sign"></i>
+                    <span>Amount: ₹<%= committee.amountPerMember || 'Not specified' %></span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-users"></i>
+                    <span>Total Members: <%= committee.totalMembers || 'Not specified' %></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="committee-members">
+            <h2><i class="fas fa-list"></i> Member Contributions</h2>
+            <div class="table-container">
+                <table class="members-table">
+                    <thead>
+                        <tr>
+                            <th>Member Name</th>
+                            <th>Contribution</th>
+                            <th>Paid Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(members && members.length > 0) { %>
+                            <% members.forEach(member => { %>
+                                <tr>
+                                    <td><%= member.name %></td>
+                                    <td>₹<%= member.amount.toFixed(2) %></td>
+                                    <td>₹<%= member.paidAmount.toFixed(2) %></td>
+                                    <td>
+                                        <span class="payment-status <%= member.status %>">
+                                            <%= member.status.charAt(0).toUpperCase() + member.status.slice(1) %>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="4" class="no-members">
+                                    <i class="fas fa-info-circle"></i> No members added yet
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" id="shareLink" value="<%= shareableLink %>" style="position: absolute; left: -9999px;">
+
+    <script>
+    function copyShareLink() {
+        const shareLink = document.getElementById('shareLink');
+        shareLink.select();
+        document.execCommand('copy');
+        
+        // Show feedback
+        alert('Share link copied to clipboard!');
+    }
+    </script>
+</body>
+</html>

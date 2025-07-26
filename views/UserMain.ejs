@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= committee.title %> - Committee Details</title>
+    <link rel="stylesheet" href="/css/userpage.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      /* Additional styles for payment status */
+      .payment-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .payment-status.paid {
+        background-color: #e6f7ee;
+        color: #28a745;
+      }
+      .payment-status.partial {
+        background-color: #fff8e6;
+        color: #ffc107;
+      }
+      .payment-status.pending {
+        background-color: #fee;
+        color: #dc3545;
+      }
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 15px;
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 15px;
+      }
+      .back-button:hover {
+        background-color: #5a6268;
+      }
+      .progress-bar-container {
+        width: 100%;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        margin-top: 5px;
+        height: 6px;
+      }
+      .progress-bar {
+        height: 100%;
+        border-radius: 4px;
+        background-color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="user-container">
+      <!-- Replace the existing back button with this -->
+      <form action="/api/admin/dashboard" method="POST" style="display: inline">
+        <input
+          type="hidden"
+          name="adminId"
+          value="<%= committee.adminId._id %>"
+        />
+        <button type="submit" class="back-button">
+          <i class="fas fa-arrow-left"></i> Back to All Committees
+        </button>
+      </form>
+
+      <header class="committee-header">
+        <div class="header-content">
+          <h1><i class="fas fa-users"></i> <%= committee.title %></h1>
+           <div class="header-actions">
+               <button onclick="shareCommittee()" class="share-button">
+                   <i class="fas fa-share-alt"></i> Share
+               </button>
+               <a href="/api/admin/committees/<%= committee._id %>/history" class="history-button">
+                  <i class="fas fa-history"></i> View History
+               </a>
+           </div>
+        </div>
+        <div class="committee-meta">
+          <div class="meta-item">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin: <%= committee.adminId.name %></span>
+          </div>
+          <div class="meta-item">
+            <i class="fas fa-rupee-sign"></i>
+            <span
+              >Amount: ₹<%= committee.amountPerMember || 'Not specified'
+              %></span
+            >
+          </div>
+          <div class="meta-item">
+            <i class="fas fa-user-friends"></i>
+            <span
+              >Members: <%= committee.totalMembers || 'Not specified' %></span
+            >
+          </div>
+          <div class="meta-item">
+            <i class="far fa-calendar-alt"></i>
+            <span
+              >Start Date: <%= new
+              Date(committee.startDate).toLocaleDateString() %></span
+            >
+          </div>
+        </div>
+      </header>
+
+      <div class="user-actions">
+        <button class="export-button">
+          <i class="fas fa-file-export"></i> Export
+        </button>
+        <button class="print-button"><i class="fas fa-print"></i> Print</button>
+      </div>
+
+      <div class="committee-members">
+        <h2><i class="fas fa-list-ul"></i> Member Contributions</h2>
+        <div class="table-container">
+          <table class="members-table">
+            <thead>
+              <tr>
+                <th>Member Name</th>
+                <th>Contribution</th>
+                <th>Paid Amount</th>
+                <th>Balance Due</th>
+                <th>Payment Status</th>
+                <th>Last Payment</th>
+              </tr>
+<tbody>
+  <% if(members && members.length > 0) { %> 
+    <% members.forEach(member => { 
+      const paymentPercentage = (member.paidAmount / member.amount) * 100;
+      let statusClass, statusText;
+      
+      // Calculate status based on payment amount
+      if (member.paidAmount >= member.amount) {
+        statusClass = 'paid';
+        statusText = 'Paid';
+      } else if (member.paidAmount > 0) {
+        statusClass = 'partial';
+        statusText = 'Partial';
+      } else {
+        statusClass = 'pending';
+        statusText = 'Pending';
+      }
+    %>
+    <tr>
+      <td><%= member.name %></td>
+      <td>₹<%= member.amount.toFixed(2) %></td>
+      <td>
+        ₹<%= member.paidAmount.toFixed(2) %>
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: <%= paymentPercentage %>%"></div>
+        </div>
+      </td>
+      <td class="<%= member.paidAmount >= member.amount ? 'paid' : 'due' %>">
+        ₹<%= Math.max(0, (member.amount - member.paidAmount).toFixed(2)) %>
+      </td>
+      <td>
+        <span class="payment-status <%= statusClass %>">
+          <i class="fas <%= statusClass === 'paid' ? 'fa-check-circle' : 
+            (statusClass === 'partial' ? 'fa-clock' : 'fa-exclamation-circle') %>">
+          </i>
+          <%= statusText %>
+        </span>
+      </td>
+      <td>
+        <%= member.paymentDate ? new Date(member.paymentDate).toLocaleDateString() : 'Not paid yet' %>
+      </td>
+    </tr>
+    <% }) %> 
+  <% } else { %>
+    <tr>
+      <td colspan="6" class="no-members">
+        <i class="fas fa-info-circle"></i> No members added yet
+      </td>
+    </tr>
+  <% } %>
+</tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="committee-footer">
+        <p>
+          <i class="far fa-clock"></i> Last updated: <%= new
+          Date(committee.updatedAt).toLocaleString() %>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      function shareCommittee() {
+        const shareLink = `${window.location.origin}/api/admin/public/committee/<%= committee._id %>`;
+        navigator.clipboard.writeText(shareLink).then(() => {
+          alert("Share link copied to clipboard!");
+        });
+      }
+    </script>
+
+    <script>
+      // Print functionality
+      document.querySelector(".print-button").addEventListener("click", () => {
+        window.print();
+      });
+
+      // Export functionality (could be enhanced to export as CSV/Excel)
+      document.querySelector(".export-button").addEventListener("click", () => {
+        alert("Export functionality would be implemented here");
+        // In a real implementation, this would generate a CSV or Excel file
+      });
+    </script>
+  </body>
+</html>

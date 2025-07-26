@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Committee Manager | Financial Group Management</title>
+  <link rel="stylesheet" href="/css/homepage.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-hand-holding-usd"></i>
+          <h1>Committee<span>Manager</span></h1>
+        </div>
+        <p class="tagline">Streamline your financial group management</p>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="hero-section">
+        <div class="hero-content">
+          <h2>Efficient Committee Management</h2>
+          <p>Manage collections, distributions, and member rotations with ease</p>
+          
+          <div class="auth-actions">
+            <% if (!Admin) { %>
+              <div class="action-buttons">
+                <a href="/api/admin/login" class="btn btn-primary">
+                  <i class="fas fa-lock"></i> Admin Login
+                </a>
+                <a href="/api/admin/public/committees" class="btn btn-secondary">
+                  <i class="fas fa-users"></i> View Committees
+                </a>
+              </div>
+            <% } else { %>
+              <div class="action-buttons">
+                <form action="/api/admin/adminPage" method="POST">
+                  <input type="hidden" name="adminId" value="<%= Admin._id %>">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                  </button>
+                </form>
+                
+                <form action="/api/admin/dashboard" method="POST">
+                  <input type="hidden" name="adminId" value="<%= Admin._id %>">
+                  <button type="submit" class="btn btn-secondary">
+                    <i class="fas fa-list-ul"></i> My Committees
+                  </button>
+                </form>
+              </div>
+            <% } %>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="/images/pic.jpg" alt="Committee management illustration">
+        </div>
+      </section>
+
+      <section class="features-section">
+        <h3>Key Features</h3>
+        <div class="features-grid">
+          <div class="feature-card">
+            <i class="fas fa-money-bill-wave"></i>
+            <h4>Collection Tracking</h4>
+            <p>Monitor member contributions and payment status</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-calendar-alt"></i>
+            <h4>Rotation Management</h4>
+            <p>Automate or manually set recipient order</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-chart-line"></i>
+            <h4>Financial Reports</h4>
+            <p>Generate reports for transparency</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fas fa-hand-holding-usd"></i>
+          <span>CommitteeManager</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Support</a>
+        </div>
+        <div class="copyright">
+          © 2025 Committee Manager. All rights reserved.
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

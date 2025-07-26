@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Signup</title>
+    <link rel="stylesheet" href="/css/Signup.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-form">
+            <h2>Admin Signup</h2>
+            <% if (error) { %>
+                <div class="error-message"><%= error %></div>
+            <% } %>
+            <% if (success) { %>
+                <div class="success-message"><%= success %></div>
+            <% } %>
+            <form action="/api/admin/signup" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone (Optional)</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </form>
+            <div class="login-link">
+                Already have an account? <a href="/api/admin/login">Login here</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
