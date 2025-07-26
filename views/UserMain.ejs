@@ -57,6 +57,50 @@
         border-radius: 4px;
         background-color: #28a745;
       }
+      .search-section {
+  margin: 20px 0;
+}
+
+.search-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.search-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  color: #6c757d;
+}
+
+#memberSearch {
+  width: 100%;
+  padding: 12px 20px 12px 45px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+#memberSearch:focus {
+  outline: none;
+  border-color: #4a6bff;
+  box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
+}
+
+.highlight {
+  background-color: #fff8e6 !important;
+  transition: background-color 0.3s ease;
+}
+
+.members-table tbody tr {
+  transition: all 0.3s ease;
+}
     </style>
   </head>
   <body>
@@ -77,9 +121,9 @@
         <div class="header-content">
           <h1><i class="fas fa-users"></i> <%= committee.title %></h1>
            <div class="header-actions">
-               <button onclick="shareCommittee()" class="share-button">
+               <!-- <button onclick="shareCommittee()" class="share-button">
                    <i class="fas fa-share-alt"></i> Share
-               </button>
+               </button> -->
                <a href="/api/admin/committees/<%= committee._id %>/history" class="history-button">
                   <i class="fas fa-history"></i> View History
                </a>
@@ -119,6 +163,16 @@
         </button>
         <button class="print-button"><i class="fas fa-print"></i> Print</button>
       </div>
+
+      <!-- Add this after the user-actions div and before committee-members div -->
+<div class="search-section">
+  <div class="search-container">
+    <div class="search-input-group">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="memberSearch" placeholder="Search member by name...">
+    </div>
+  </div>
+</div>
 
       <div class="committee-members">
         <h2><i class="fas fa-list-ul"></i> Member Contributions</h2>
@@ -206,6 +260,28 @@
     </script>
 
     <script>
+  const memberSearch = document.getElementById('memberSearch');
+  memberSearch.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const tableRows = document.querySelectorAll('.members-table tbody tr');
+    
+    tableRows.forEach(row => {
+      const memberName = row.querySelector('td:first-child').textContent.toLowerCase();
+      if (memberName.includes(searchTerm)) {
+        row.style.display = '';
+        if (searchTerm) {
+          row.classList.add('highlight');
+        } else {
+          row.classList.remove('highlight');
+        }
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+    <script>
       // Print functionality
       document.querySelector(".print-button").addEventListener("click", () => {
         window.print();
@@ -217,5 +293,8 @@
         // In a real implementation, this would generate a CSV or Excel file
       });
     </script>
+
+
+    
   </body>
 </html>

@@ -99,6 +99,21 @@
         </div>
       </section>
 
+      <!-- Add this after the add-member-card section and before members-list-card section -->
+<section class="card search-card">
+  <div class="card-header">
+    <h2><i class="fas fa-search"></i> Search Members</h2>
+  </div>
+  <div class="card-body">
+    <div class="search-container">
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-search"></i></span>
+        <input type="text" id="memberSearch" placeholder="Search member by name...">
+      </div>
+    </div>
+  </div>
+</section>
+
       <!-- Members List Section -->
       <section class="card members-list-card">
         <div class="card-header">
@@ -201,5 +216,34 @@
       </section>
     </main>
   </div>
+
+
+  <script>
+document.getElementById('memberSearch').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const tableRows = document.querySelectorAll('.members-table tbody tr');
+    
+    tableRows.forEach(row => {
+        const memberName = row.querySelector('.member-name').textContent.toLowerCase();
+        if (memberName.includes(searchTerm)) {
+            row.style.display = '';
+            if (searchTerm) {
+                row.classList.add('highlight');
+            } else {
+                row.classList.remove('highlight');
+            }
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+// Scroll to member when clicked
+document.querySelectorAll('.members-table tbody tr').forEach(row => {
+    row.addEventListener('click', function() {
+        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+});
+</script>
 </body>
 </html>
