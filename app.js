@@ -41,6 +41,11 @@ app.use("/api/admin",memberRoutes);
 const dbconnect = require("./config/database");
 dbconnect();
 
+app.get("/", (req, res) => {
+  res.redirect("/api/admin"); // or render a separate homepage
+});
+
+
 app.listen(PORT,()=>{
     console.log("App is listinig on port 3000");
 })
