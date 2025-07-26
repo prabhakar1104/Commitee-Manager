@@ -25,9 +25,6 @@ exports.createCommittee = async (req, res) => {
 
 
 
-
-
-
 exports.adminPage = async (req, res) => {
   try {
     const { id } = req.params;

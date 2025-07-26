@@ -7,10 +7,69 @@ const { isAdminLoggedIn } = require("../middleware/auth");
 const CommitteeMember = require("../model/user_record"); 
 const {add,show,dashBoard,home} = require("../controller/comeetyOp");
 const {userPage} = require("../controller/UserMain");
+const mongoose = require("mongoose");
 
 route.get("/",home);
 
-route.post("/dashBoard",dashBoard);
+
+route.post("/dashboard", async(req,res)=>{ // Remove isAdminLoggedIn middleware
+    try {
+        const adminId = req.body.adminId;
+
+        if (!mongoose.Types.ObjectId.isValid(adminId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid admin ID format"
+            });
+        }
+
+        const committees = await Committee.find({adminId})
+            .populate('adminId', 'name') // Only populate necessary fields
+            .select('-adminId.email -adminId.password'); // Exclude sensitive info
+        
+        res.render("Dashboard", { 
+            committees: committees,
+            adminId: adminId
+        });
+    } catch(err) {
+        console.error("Error fetching dashboard:", err);
+        res.status(500).render("Dashboard", { 
+            committees: [],
+            adminId: null,
+            error: "Server error" 
+        });
+    }
+});
+
+// Add a GET route for direct link access
+route.get("/dashboard/:adminId", async(req,res)=>{
+    try {
+        const adminId = req.params.adminId;
+
+        if (!mongoose.Types.ObjectId.isValid(adminId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid admin ID format"
+            });
+        }
+
+        const committees = await Committee.find({adminId})
+            .populate('adminId', 'name')
+            .select('-adminId.email -adminId.password');
+        
+        res.render("Dashboard", { 
+            committees: committees,
+            adminId: adminId
+        });
+    } catch(err) {
+        console.error("Error fetching dashboard:", err);
+        res.status(500).render("Dashboard", { 
+            committees: [],
+            adminId: null,
+            error: "Server error" 
+        });
+    }
+});
 
 route.post("/add",add);
 
